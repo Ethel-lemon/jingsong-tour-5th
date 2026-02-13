@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>《惊悚旅游团》人物消消乐</title>
+<style>
+body{
+    margin:0;
+    background:#eee;
+    display:flex;
+    justify-content:center;
+}
+canvas{
+    background:white;
+    margin-top:10px;
+    border-radius:12px;
+}
+#game-over-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 12px;
+}
+.game-over-text {
+    font-size: 70px; /* 适配850×1500：放大文字 */
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 20px;
+}
+.game-over-time {
+    font-size: 50px; /* 适配850×1500：放大文字 */
+    margin-bottom: 20px;
+}
+.game-over-score {
+    font-size: 50px; /* 适配850×1500：放大文字 */
+    color: #ffed4e;
+    margin-bottom: 50px;
+}
+#restart-button {
+    width: 300px; /* 适配850×1500：放大按钮 */
+    height: 90px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 45px; /* 适配850×1500：放大文字 */
+    font-weight: bold;
+    cursor: pointer;
+}
+#game-container {
+    position: relative;
+    margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<div id="game-container">
+    <canvas id="game"></canvas>
+    <div id="game-over-overlay">
+        <div class="game-over-text">游戏结束</div>
+        <div class="game-over-time">您游戏了0秒！</div>
+        <div class="game-over-score">本次得分：0分</div>
+        <button id="restart-button">重新开始</button>
+    </div>
+</div>
+
+<script>
+// ========== 核心修改：画布尺寸改为850×1500 ==========
+const SCREEN_WIDTH = 850
+const SCREEN_HEIGHT = 1500
+
+const GRID_COLS = 5
+const GRID_ROWS = 8
+// ========== 适配850宽度：格子大小改为150（5×150=750，留100px边距） ==========
+const CELL_SIZE = 150
+
+// ========== 适配850×1500：网格位置重新计算（居中+合理下移） ==========
+const GRID_LEFT = (SCREEN_WIDTH - GRID_COLS * CELL_SIZE) / 2  // 水平居中：(850-750)/2=50px
+const GRID_TOP  = 40  // 垂直下移40px，适配1500高度
+
+const FPS = 30
+const BASE_DROP_INTERVAL = 3000
+const BASE_FALL_SPEED = 15
+
+// 备注文字
+const CUSTOM_REMARK = "《惊悚旅游团》人物消消乐 | 图源：喵吉（图标）、燕孤鸿、安洵与嬉、沄澜"
+
+let current_drop_interval = BASE_DROP_INTERVAL
+let current_fall_speed = BASE_FALL_SPEED
+
+const canvas = document.getElementById("game")
+canvas.width = SCREEN_WIDTH
+canvas.height = SCREEN_HEIGHT
+const ctx = canvas.getContext("2d")
+
+/* ========= 图片 ========= */
+const files = [
+"xun1.png","xun2.png","xun3.png","xun4.png",
+"zhuimeng.png","lingmei.png","xi.png","tunshizhe.png","an.png"
+]
+
+let images=[]
+let loaded=0
+
+files.forEach(f=>{
+    let img=new Image()
+    img.src="images/"+f
+    img.onload=()=>{
+        images.push(img)
+        loaded++
+    }
+})
+
+/* ========= 游戏状态 ========= */
+let grid=[]
+let dragging=false
+let drag_from=null
+let drag_val=0
+let score=0
+let lastDrop=Date.now()
+let frameCounter=0
+let drag_to=null
+
+let gameOver = false
+let gameStartTime = Date.now()
+let gameDuration = 0
+
+function init(){
+    grid=[]
+    for(let r=0;r<GRID_ROWS;r++){
+        grid.push(new Array(GRID_COLS).fill(0))
+    }
+    score = 0
+    lastDrop = Date.now()
+    frameCounter = 0
+    gameOver = false
+    gameStartTime = Date.now()
+    gameDuration = 0
+    current_drop_interval = BASE_DROP_INTERVAL
+    current_fall_speed = BASE_FALL_SPEED
+    document.getElementById('game-over-overlay').style.display = 'none'
+}
+init()
+
+/* ========= 生成 ========= */
+function generate(){
+    if(gameOver) return
+    let cols=[]
+    for(let c=0;c<GRID_COLS;c++)
+        if(grid[0][c]==0) cols.push(c)
+
+    if(cols.length){
+        let c=cols[Math.floor(Math.random()*cols.length)]
+        grid[0][c]=Math.floor(Math.random()*images.length)+1
+    }
+}
+
+/* ========= 下落 ========= */
+function drop(){
+    let moved=false
+    for(let c=0;c<GRID_COLS;c++){
+        for(let r=GRID_ROWS-1;r>0;r--){
+            if(grid[r][c]==0 && grid[r-1][c]!=0){
+                grid[r][c]=grid[r-1][c]
+                grid[r-1][c]=0
+                moved=true
+            }
+        }
+    }
+    return moved
+}
+
+/* ========= 消除 ========= */
+function matches(){
+    let set=new Set()
+
+    for(let r=0;r<GRID_ROWS;r++){
+        for(let c=0;c<GRID_COLS-2;c++){
+            let id=grid[r][c]
+            if(id && grid[r][c+1]==id && grid[r][c+2]==id){
+                let end=c+2
+                while(end+1<GRID_COLS && grid[r][end+1]==id) end++
+                for(let i=c;i<=end;i++) set.add(r+","+i)
+            }
+        }
+    }
+
+    for(let c=0;c<GRID_COLS;c++){
+        for(let r=0;r<GRID_ROWS-2;r++){
+            let id=grid[r][c]
+            if(id && grid[r+1][c]==id && grid[r+2][c]==id){
+                let end=r+2
+                while(end+1<GRID_ROWS && grid[end+1][c]==id) end++
+                for(let i=r;i<=end;i++) set.add(i+","+c)
+            }
+        }
+    }
+    return set
+}
+
+function remove(set){
+    score+=set.size
+    set.forEach(p=>{
+        let [r,c]=p.split(",")
+        grid[r][c]=0
+    })
+}
+
+/* ========= 绘制 ========= */
+function draw(){
+ctx.clearRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
+
+// 绘制网格
+for(let r=0;r<GRID_ROWS;r++){
+for(let c=0;c<GRID_COLS;c++){
+let x=GRID_LEFT+c*CELL_SIZE
+let y=GRID_TOP+r*CELL_SIZE
+ctx.strokeStyle="#ddd"
+ctx.strokeRect(x,y,CELL_SIZE,CELL_SIZE)
+
+let id=grid[r][c]
+if(id){
+let img=images[id-1]
+if(img)
+ctx.drawImage(img,x+8,y+8,CELL_SIZE-16,CELL_SIZE-16) // 适配150格子：内边距放大到8px
+
+// 拖拽高亮
+if(dragging){
+    if(
+        (r==drag_from?.[0] && c==drag_from?.[1]) ||
+        (r==drag_to?.[0] && c==drag_to?.[1])
+    ){
+        ctx.strokeStyle="red"
+        ctx.lineWidth=5 // 适配大尺寸：高亮边框加粗
+        ctx.strokeRect(x+4,y+4,CELL_SIZE-8,CELL_SIZE-8)
+    }
+}
+}
+}
+}
+
+// ========== 适配850×1500：备注文字位置/大小调整 ==========
+const remarkY = GRID_TOP + GRID_ROWS * CELL_SIZE + 20  // 网格底部+20px
+ctx.fillStyle="#666"          
+ctx.font="20px Arial"         // 字体放大到20px
+ctx.textAlign="center"        
+ctx.fillText(CUSTOM_REMARK, SCREEN_WIDTH/2+40, remarkY)  // 水平居中微调
+ctx.textAlign="left"          
+
+// ========== 适配850×1500：分数/速度文字位置/大小调整 ==========
+ctx.fillStyle="red"
+ctx.font="30px Arial"         // 字体放大到30px
+ctx.fillText("分数："+score,30,SCREEN_HEIGHT-180) // 位置下移，适配1500高度
+
+ctx.fillStyle="#333"
+ctx.fillText("下落速度："+current_fall_speed, 30, SCREEN_HEIGHT-120)
+ctx.fillText("生成速度："+(current_drop_interval/1000).toFixed(1)+"s", 30, SCREEN_HEIGHT-60)
+
+// ========== 适配850×1500：按钮位置/大小调整 ==========
+drawBtn(650,1300,"-")  // 下落速度-（位置右移+下移）
+drawBtn(720,1300,"+")  // 下落速度+
+drawBtn(650,1380,"-")  // 生成速度-
+drawBtn(720,1380,"+")  // 生成速度+
+
+}
+
+// ========== 适配850×1500：按钮绘制大小调整 ==========
+function drawBtn(x,y,t){
+ctx.fillStyle="#3b82f6"
+ctx.fillRect(x,y,70,50) // 按钮放大到70×50px
+ctx.fillStyle="white"
+ctx.font="35px Arial"   // 按钮文字放大到35px
+ctx.fillText(t,x+20,y+35) // 文字位置微调居中
+}
+
+function getPos(e){
+    const rect = canvas.getBoundingClientRect()
+    if(e.touches && e.touches.length){
+        return {
+            x:e.touches[0].clientX - rect.left,
+            y:e.touches[0].clientY - rect.top
+        }
+    }else if(e.changedTouches && e.changedTouches.length){
+        return {
+            x:e.changedTouches[0].clientX - rect.left,
+            y:e.changedTouches[0].clientY - rect.top
+        }
+    }else{
+        return {x:e.offsetX,y:e.offsetY}
+    }
+}
+
+// ========== 适配850×1500：按钮点击区域调整 ==========
+function start(e){
+    if(gameOver) return
+    let {x,y}=getPos(e)
+    e.preventDefault()
+
+    // 上面一行按钮 → 控制「下落速度」
+    if(x>650 && x<720 && y>1300 && y<1350){ // 适配新按钮位置
+        current_fall_speed = Math.min(20, current_fall_speed + 1)
+        return
+    }
+    if(x>720 && x<790 && y>1300 && y<1350){ // 适配新按钮位置
+        current_fall_speed = Math.max(1, current_fall_speed - 1)
+        return
+    }
+    // 下面一行按钮 → 控制「生成速度」
+    if(x>650 && x<720 && y>1380 && y<1430){ // 适配新按钮位置
+        current_drop_interval = Math.min(5000, current_drop_interval + 500)
+        return
+    }
+    if(x>720 && x<790 && y>1380 && y<1430){ // 适配新按钮位置
+        current_drop_interval = Math.max(1000, current_drop_interval - 500)
+        return
+    }
+
+    // 网格点击逻辑
+    let c=Math.floor((x-GRID_LEFT)/CELL_SIZE)
+    let r=Math.floor((y-GRID_TOP)/CELL_SIZE)
+    if(r>=0&&r<GRID_ROWS&&c>=0&&c<GRID_COLS){
+        dragging=true
+        drag_from=[r,c]
+        drag_val=grid[r][c]
+    }
+}
+
+function move(e){
+    if(!dragging || gameOver) return
+    e.preventDefault()
+    let {x,y}=getPos(e)
+    let c=Math.floor((x-GRID_LEFT)/CELL_SIZE)
+    let r=Math.floor((y-GRID_TOP)/CELL_SIZE)
+    if(r<0||r>=GRID_ROWS||c<0||c>=GRID_COLS) return
+    drag_to=[r,c]
+}
+
+function end(e){
+    if(!dragging || gameOver) return
+    dragging=false
+    let {x,y}=getPos(e)
+    let c=Math.floor((x-GRID_LEFT)/CELL_SIZE)
+    let r=Math.floor((y-GRID_TOP)/CELL_SIZE)
+    if(r<0||r>=GRID_ROWS||c<0||c>=GRID_COLS) return
+    let [r1,c1]=drag_from
+    if(Math.abs(r-r1)+Math.abs(c-c1)!=1) return
+    if(grid[r][c]==0 || grid[r1][c1]==0) return
+
+    let temp = grid[r][c]
+    grid[r][c] = grid[r1][c1]
+    grid[r1][c1] = temp
+}
+
+function checkGameOver() {
+    for(let c=0; c<GRID_COLS; c++) {
+        let full = true
+        for(let r=0; r<GRID_ROWS; r++) {
+            if(grid[r][c] === 0) {
+                full = false
+                break
+            }
+        }
+        if(full) return true
+    }
+    return false
+}
+
+function showGameOver() {
+    gameOver = true
+    gameDuration = Math.floor((Date.now() - gameStartTime)/1000)
+    document.querySelector('.game-over-time').textContent = `您游戏了${gameDuration}秒！`
+    document.querySelector('.game-over-score').textContent = `本次得分：${score}分`
+    document.getElementById('game-over-overlay').style.display = 'flex'
+}
+
+// 事件绑定
+canvas.addEventListener("mousedown",start)
+canvas.addEventListener("mousemove",move)
+canvas.addEventListener("mouseup",end)
+canvas.addEventListener("touchstart",start,{passive:false})
+canvas.addEventListener("touchmove",move,{passive:false})
+canvas.addEventListener("touchend",end)
+document.getElementById('restart-button').onclick = init
+
+function loop(){
+    if(!gameOver){
+        let now=Date.now()
+        if(now-lastDrop>current_drop_interval){
+            generate()
+            lastDrop=now
+        }
+        frameCounter++
+        if(frameCounter>=current_fall_speed){
+            drop()
+            frameCounter=0
+        }
+        let m=matches()
+        if(m.size){
+            remove(m)
+            while(drop());
+        }
+        if(checkGameOver()){
+            showGameOver()
+        }
+    }
+    draw()
+    requestAnimationFrame(loop)
+}
+loop()
+</script>
+</body>
+</html>

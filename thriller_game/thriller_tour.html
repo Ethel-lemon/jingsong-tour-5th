@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惊悚旅游团 - 文字冒险小游戏</title>
+    <!-- 引入指定名称的CSS文件 -->
+    <link rel="stylesheet" href="thriller_tour.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="story-text" id="storyText"></div>
+        <div id="choiceButtons"></div>
+    </div>
+
+    <div class="stats-panel">
+        <h4>神秘的数值</h4>
+        <!-- 生命值 -->
+        <div>生命值: <span id="lifeValue">0</span>/10</div>
+        <div class="progress-bar">
+            <div class="progress-fill life-fill" id="lifeBar"></div>
+        </div>
+        <!-- 理智值 -->
+        <div>理智值: <span id="sanValue">0</span>/10</div>
+        <div class="progress-bar">
+            <div class="progress-fill san-fill" id="sanBar"></div>
+        </div>
+        <!-- 信任值 -->
+        <div>信任值: <span id="trustValue">0</span>/10</div>
+        <div class="progress-bar">
+            <div class="progress-fill trust-fill" id="trustBar"></div>
+        </div>
+        <!-- 沙雕值 -->
+        <div>沙雕值: <span id="complainValue">0</span>/10</div>
+        <div class="progress-bar">
+            <div class="progress-fill complain-fill" id="complainBar"></div>
+        </div>
+        <!-- 线索值 -->
+        <div>线索值: <span id="clueValue">0</span>/10</div>
+        <div class="progress-bar">
+           <div class="progress-fill clue-fill" id="clueBar"></div>
+        </div>
+        <button class="restart-btn" onclick="restartGame()">重新开始游戏</button>
+    </div>
+
+    <!-- JS文件路径 -->
+    <script src="thriller_tour.js"></script>
+</body>
+
+</html>
