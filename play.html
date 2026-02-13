@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>《惊悚旅游团》五周年小惊喜 | 趣味互动</title>
+    <!-- 只引用play.css，完全独立 -->
+    <link rel="stylesheet" href="play.css">
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- 顶部头图 -->
+    <header class="header">
+        <div class="header-bg"></div>
+        <div class="header-text">
+            <h1>《惊悚旅游团》<span>五周年小惊喜</span></h1>
+            <p>趣味互动 · 专属彩蛋 | 2021.2.14 - 2026.2.17</p>
+        </div>
+    </header>
+
+    <!-- 核心内容区 -->
+<main class="content">
+        <!-- 1. 人物消消乐.exe下载（填exe地址） -->
+    <section class="section game-download">
+        <h2><i class="fas fa-gamepad"></i> 人物消消乐 · 电脑版</h2>
+        <div class="works-content">
+            <h3>《惊悚旅游团》人物消消乐.exe</h3>
+            <!-- href指向项目内的downloads文件夹里的exe文件 -->
+            <a href="download/xxl_picture_exe.exe" class="download-btn" target="_blank" download>
+                <i class="fas fa-download"></i> 下载桌面版（Windows）
+            </a>
+            <p class="tip-text">
+                💡 仅支持Windows系统，下载后双击运行，无需安装<br>
+                💡 若报毒请放心放行（无恶意程序）
+            </p>
+        </div>
+    </section>
+
+        <!-- 2. 电脑端web版入口（本地HTML文件链接） -->
+    <section class="section game-web">
+        <h2><i class="fas fa-gamepad"></i> 人物消消乐 · 电脑版</h2>
+        <div class="works-content">
+            <h3>《惊悚旅游团》人物消消乐 · 电脑端web版入口</h3>
+            <!-- href指向同级web-game文件夹里的.html类型文件 -->
+            <a href="web-game/xxl_picture_web.html" class="web-btn" target="_blank">
+                <i class="fas fa-globe"></i> 打开电脑端Web版
+            </a>
+            <p class="tip-text">
+                💡 适配电脑端，建议用Chrome打开<br>
+                💡 无需下载，直接在线游玩
+            </p>
+        </div>
+    </section>
+
+    <!-- 2. 移动端web版入口 -->
+    <section class="section game-web">
+        <h2><i class="fas fa-mobile-screen-button"></i> 人物消消乐 · 移动端</h2>
+        <div class="works-content">
+            <h3>《惊悚旅游团》人物消消乐 · 移动端web版入口</h3>
+            <a href="web-game/mobile.html" class="web-btn" target="_blank">
+                <i class="fas fa-globe"></i> 打开移动端Web版
+            </a>
+            <p class="tip-text">
+                💡 适配手机移动端，建议用Chrome/系统浏览器打开<br>
+                💡 无需下载，直接在线竖屏游玩
+            </p>
+        </div>
+    </section>
+
+    <!-- 3. 分支结局互动式小故事 -->
+    <section class="section story-interactive">
+        <h2><i class="fas fa-book-open"></i> 分支结局互动式小故事</h2>
+        <div class="works-content">
+            <h3>《惊悚旅游团》专属互动小故事</h3>
+            <!-- href指向同级的story文件夹下的index.html -->
+            <a href="thriller_game/thriller_tour.html" class="web-btn" target="_blank">
+                <i class="fas fa-hand-pointer"></i> 开始互动体验
+            </a>
+            <p class="tip-text">
+                💡 多分支剧情，你的选择决定最终结局<br>
+                💡 适配手机/电脑，无需下载，直接在线体验
+            </p>
+        </div>
+    </section>
+
+        <!-- 返回主页面 -->
+        <section class="section back-btn">
+            <div class="works-content">
+                <a href="index.html" class="works-btn">
+                    <i class="fas fa-arrow-left"></i> 返回五周年纪念主页面
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部版权 -->
+    <footer class="footer">
+        <p>《惊悚旅游团》五周年纪念 · 感谢每一位读者的陪伴</p>
+        <p>©2026 制作：予清 | 致最爱的《惊悚旅游团》五周年</p>
+    </footer>
+
+    <!-- 平滑滚动脚本 -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

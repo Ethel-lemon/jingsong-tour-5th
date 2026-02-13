@@ -1,0 +1,305 @@
+/* ========== 基础全局样式 ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 盒模型优化，避免宽度溢出 */
+}
+
+body {
+    font-family: "Microsoft Yahei", "PingFang SC", sans-serif; /* 更适配中文的字体 */
+    background-color: #f9f7f7;
+    color: #333;
+    line-height: 1.6; /* 基础行高，提升阅读性 */
+}
+
+/* ========== 页头样式 ========== */
+.header {
+    background: linear-gradient(135deg, #c86464 0%, #a04848 100%); /* 渐变背景*/
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 12px rgba(200, 100, 100, 0.2); /* 柔和阴影，增加层次感 */
+    position: relative;
+    overflow: hidden;
+}
+
+/* 页头装饰小元素 */
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.15;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 2px; /* 字间距，更舒展 */
+    position: relative;
+    z-index: 1; /* 保证文字在装饰层上方 */
+}
+
+.header p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-top: 12px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== 核心内容区 ========== */
+.content {
+    max-width: 850px; /* 适度加宽，提升阅读体验 */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========== 板块通用样式 ========== */
+.section {
+    margin: 60px 0;
+    background-color: #fff;
+    border-radius: 12px; /* 更大圆角，更柔和 */
+    padding: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05); /* 轻阴影，增加立体感 */
+    transition: transform 0.3s ease; /* 轻微悬浮效果 */
+}
+
+/* 板块悬浮微动效 */
+.section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.section h2 {
+    color: #c86464;
+    font-size: 26px;
+    margin-bottom: 25px;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0e6e6;
+    position: relative;
+}
+
+/* 标题下方小装饰 */
+.section h2::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background-color: #c86464;
+}
+
+/* 图标颜色优化 */
+.section h2 i {
+    margin-right: 10px;
+    color: #a04848;
+}
+
+/* ========== 文本内容样式 ========== */
+.section-content {
+    line-height: 2.2; /* 更舒适的行间距 */
+    padding: 0 10px;
+    text-indent: 2em;
+    color: #444; /* 稍浅的文字色，减少视觉疲劳 */
+    font-size: 16px;
+}
+
+/* ========== 角色/副本列表卡片 ========== */
+.list-item {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fef9f9; /* 浅红底，贴合主题 */
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(200, 100, 100, 0.05);
+    border-left: 4px solid #c86464; /* 左侧色条，增加辨识度 */
+    transition: all 0.3s ease;
+}
+
+/* 卡片悬浮效果 */
+.list-item:hover {
+    background-color: #fff;
+    border-left-color: #a04848;
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(200, 100, 100, 0.1);
+}
+
+.list-item h3 {
+    color: #a04848;
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.list-item p {
+    color: #555;
+    font-size: 15px;
+    line-height: 2;
+}
+
+/* ========== 时间线专属样式 ========== */
+.timeline-list {
+    position: relative;
+    padding-left: 50px; /* 给时间轴留足够空间 */
+    margin: 0;
+}
+
+/* 时间线竖线（渐变风格，贴合页头） */
+.timeline-list::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(180deg, #c86464 0%, #a04848 100%);
+    border-radius: 1px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px; /* 加大间距，更舒展 */
+}
+
+/* 时间线圆点（带阴影） */
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 3px solid #c86464;
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(200, 100, 100, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* 时间线圆点悬浮效果 */
+.timeline-item:hover::before {
+    transform: scale(1.2);
+    border-color: #a04848;
+    box-shadow: 0 3px 12px rgba(200, 100, 100, 0.3);
+}
+
+/* 时间标签（渐变背景，匹配按钮风格） */
+.timeline-time {
+    display: inline-block;
+    background: linear-gradient(135deg, #c86464 0%, #a04848 100%);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(200, 100, 100, 0.15);
+    letter-spacing: 0.5px;
+}
+
+/* 时间线内的列表项（适配样式） */
+.timeline-item .list-item {
+    margin: 0;
+    padding: 25px;
+    border-left: 4px solid #a04848;
+}
+
+/* ========== 返回按钮样式 ========== */
+.back-btn {
+    text-align: center;
+    margin: 60px 0 80px !important;
+}
+
+.works-btn a {
+    display: inline-block;
+    padding: 14px 35px;
+    background: linear-gradient(135deg, #c86464 0%, #a04848 100%);
+    color: #fff !important;
+    border-radius: 50px; /* 圆形按钮，更精致 */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(200, 100, 100, 0.2);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: none;
+}
+
+.works-btn a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(200, 100, 100, 0.3);
+    background: linear-gradient(135deg, #a04848 0%, #c86464 100%); /* 反向渐变，增加交互感 */
+}
+
+.works-btn a i {
+    margin-right: 8px;
+}
+
+/* ========== 页脚样式 ========== */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 25px 0;
+    margin-top: 60px;
+    font-size: 15px;
+    background: linear-gradient(135deg, #333 0%, #222 100%);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.footer p {
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 26px;
+    }
+    .header p {
+        font-size: 16px;
+    }
+    .section {
+        padding: 20px;
+        margin: 40px 0;
+    }
+    .section h2 {
+        font-size: 22px;
+    }
+    .list-item {
+        padding: 15px;
+    }
+    .works-btn a {
+        padding: 12px 28px;
+        font-size: 16px;
+    }
+    /* 移动端时间线适配 */
+    .timeline-list {
+        padding-left: 40px;
+    }
+    .timeline-list::before {
+        left: 13px;
+    }
+    .timeline-item::before {
+        left: 5px;
+        width: 16px;
+        height: 16px;
+    }
+    .timeline-time {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+    .timeline-item .list-item {
+        padding: 20px 15px;
+    }
+}
