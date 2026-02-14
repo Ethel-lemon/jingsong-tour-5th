@@ -6,14 +6,14 @@
     font-family: "微软雅黑", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 body {
-    background-color: #f5f5f5; /* 【样式自定义】网页背景色，浅灰百搭 */
-    color: #333; /* 全局文字颜色 */
+    background-color: #f5f5f5;          /* 网页背景色，浅灰 */
+    color: #333;                        /* 全局文字颜色 */
     line-height: 1.8;
-    opacity: 0; /* 初始透明，配合JS渐显 */
-    transition: opacity 1s ease; /* 渐显动画 */
+    opacity: 0;                           /* 初始透明，配合JS渐显 */
+    transition: opacity 1s ease;          /* 渐显动画 */
 }
 body.loaded {
-    opacity: 1; /* 加载完成后显示 */
+    opacity: 1;                           /* 加载完成后显示 */
 }
 a {
     text-decoration: none;
@@ -26,14 +26,14 @@ ul, li {
 .content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 40px 20px 40px 20px; /* 上 右 下 左，底部留40px间距 */
 }
 /* 模块标题样式 */
 .section h2 {
     text-align: center;
     font-size: 24px;
     margin-bottom: 30px;
-    color: #c86464; /* 【样式自定义】标题主色，玫红/酒红适配纪念感 */
+    color: #c86464;                     /* 标题主色，玫红/酒红 */
     position: relative;
 }
 .section h2::after {
@@ -55,18 +55,18 @@ ul, li {
 /* ========== 顶部头图样式 ========== */
 .header {
     width: 100%;
-    height: 450px; /* 适配封面比例的高度，完整显示核心内容 */
+    height: 450px;      /* 适配封面比例的高度 */
     position: relative;
     overflow: hidden;
 }
-/* 头图背景：适配《惊悚旅游团》封面，完整显示不裁剪 */
+/* 头图背景：适配《惊悚旅游团》封面，完整显示 */
 .header-bg {
     width: 100%;
     height: 100%;
     background: url("./img/cover.jpg") no-repeat center center;
-    background-size: contain; /* 核心修改：完整显示图片 */
-    background-color: #000; /* 留白处填充黑色，适配深色封面 */
-    filter: blur(2px) brightness(0.6); /* 轻微模糊+变暗，保证文字清晰 */
+    background-size: contain;                   /* 完整显示图片 */
+    background-color: #000;                  /* 留白处填充黑色，适配深色封面 */
+    filter: blur(2px) brightness(0.6);         /* 轻微模糊+变暗，保证文字清晰 */
 }
 /* 头图文字 */
 .header-text {
@@ -83,7 +83,7 @@ ul, li {
     margin-bottom: 20px;
 }
 .header-text h1 span {
-    color: #ffd700; /* 五周年字样金色，突出纪念感 */
+    color: #ffd700;                         /* 五周年字样金色 */
     font-weight: bold;
 }
 .header-text p {
@@ -103,24 +103,24 @@ ul, li {
 /* ========== 经典台词墙样式 ========== */
 .words-list {
     display: flex;
-    flex-direction: column; /* 纵向排列，一行一个 */
-    align-items: center; /* 居中对齐 */
-    gap: 20px; /* 台词之间的垂直间距 */
+    flex-direction: column;             /* 纵向排列，一行一个 */
+    align-items: center;                /* 居中对齐 */
+    gap: 20px;                          /* 台词之间的垂直间距 */
 }
 .words-list p {
     padding: 15px 25px;
     background-color: #fff;
-    border-radius: 30px; /* 圆角 */
+    border-radius: 30px;                       /* 圆角 */
     box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 轻微阴影 */
     font-size: 16px;
     color: #555;
-    transition: all 0.3s ease; /* 悬停动画 */
+    transition: all 0.3s ease;                /* 悬停动画 */
 }
 /* 鼠标悬停高亮 */
 .words-list p:hover {
-    transform: translateY(-5px); /* 轻微上移 */
+    transform: translateY(-5px);             /* 轻微上移 */
     box-shadow: 0 5px 15px rgba(200,100,100,0.2);
-    color: #c86464; /* 悬停文字颜色，和标题呼应 */
+    color: #c86464;                       /* 悬停文字颜色，和标题呼应 */
 }
 
 /* ========== 时间线样式 ========== */
@@ -142,18 +142,18 @@ ul, li {
 }
 .timeline-item {
     display: flex;
-    align-items: center; /* 核心：时间和文字垂直居中对齐 */
+    align-items: center;     /* 时间和文字垂直居中对齐 */
     margin-bottom: 40px;
     position: relative;
     width: 50%;
 }
-/* 奇数项在左边，调整排列顺序让时间和文字对齐 */
+/* 奇数项在左边 */
 .timeline-item:nth-child(odd) {
     left: 0;
     padding-right: 30px;
     justify-content: flex-end;
     text-align: right;
-    flex-direction: row-reverse; /* 时间在右，文字在左，统一对齐节奏 */
+    flex-direction: row-reverse;    /* 时间在右，文字在左*/
 }
 /* 偶数项在右边 */
 .timeline-item:nth-child(even) {
@@ -170,7 +170,7 @@ ul, li {
     background-color: #fff;
     border: 3px solid #c86464;
     position: absolute;
-    top: 50%; /* 节点垂直居中 */
+    top: 50%;                       /* 节点垂直居中 */
     transform: translateY(-50%);
     z-index: 1;
 }
@@ -184,27 +184,27 @@ ul, li {
 .timeline-item.five-year::after {
     width: 24px;
     height: 24px;
-    border: 3px solid #ffd700; /* 金色边框（圆环） */
-    background-color: #fff; /* 白色内芯 */
+    border: 3px solid #ffd700;      /* 金色边框（圆环） */
+    background-color: #fff;         /* 白色内芯 */
     border-radius: 50%;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
 }
-/* 时间文字样式：inline-block 确保和文字同行 */
+/* 时间文字样式：inline-block 和文字同行 */
 .timeline-item .time {
     font-weight: bold;
     color: #c86464;
     display: inline-block;
-    margin: 0 8px; /* 时间和文字之间留间距，避免挤在一起 */
+    margin: 0 8px;                    /* 时间和文字之间留间距 */
 }
 .timeline-item.five-year .time {
     color: #ffd700;
 }
 .timeline-item p {
     color: #555;
-    margin: 0; /* 清除默认边距，避免影响对齐 */
+    margin: 0;                       /* 默认边距  */
 }
 
 /* ========== 作品内容样式 ========== */
@@ -252,22 +252,22 @@ ul, li {
 
 /* 按钮式链接样式（核心） */
 .works-btn a {
-    display: inline-block; /* 让链接能设置内边距 */
-    padding: 12px 30px; /* 按钮内边距，大小适中 */
-    background-color: #c86464; /* 按钮背景红 */
-    color: #fff !important; /* 按钮文字白色（!important 覆盖普通链接颜色） */
-    border-radius: 8px; /* 圆角，更柔和 */
-    text-decoration: none !important; /* 去掉下划线 */
+    display: inline-block;                      /* 让链接能设置内边距 */
+    padding: 12px 30px;                         /* 按钮内边距，大小适中 */
+    background-color: #c86464;                /* 按钮背景红 */
+    color: #fff !important;                   /* 按钮文字白色（!important 覆盖普通链接颜色） */
+    border-radius: 8px;                         /* 圆角 */
+    text-decoration: none !important;           /* 去掉下划线 */
     font-size: 16px;
-    transition: all 0.3s ease; /* 过渡动画，hover更丝滑 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 轻微阴影，增加立体感 */
+    transition: all 0.3s ease;                  /* 过渡动画，hover更丝滑 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);    /* 轻微阴影，增加立体感 */
 }
 
 /* 按钮 hover 效果 */
 .works-btn a:hover {
-    background-color: #a04848; /* 背景加深 */
-    color: #fff !important; /* 文字仍为白色 */
-    transform: translateY(-2px); /* 轻微上移，交互感更强 */
+    background-color: #a04848;              /* 背景加深 */
+    color: #fff !important;                 /* 文字仍为白色 */
+    transform: translateY(-2px);              /* 轻微上移 */
     box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* 阴影加重 */
 }
 
@@ -282,7 +282,7 @@ ul, li {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* 提高层级，避免被留言板遮挡 */
+    z-index: 9999;     /* 提高层级，避免被留言板遮挡 */
 }
 /* 弹窗容器 */
 .modal {
@@ -296,7 +296,7 @@ ul, li {
     font-family: "Microsoft Yahei", sans-serif;
 }
 .modal h3 {
-    color: #c86464; /* 匹配你的主题色 */
+    color: #c86464; /* 匹配主题色 */
     margin-bottom: 20px;
     font-size: 20px;
 }
@@ -418,16 +418,16 @@ ul, li {
 
 /* ========== 留言板样式 ========== */
 .github-comment {
-  max-width: 800px; /* 和上方致谢/读感板块一致的最大宽度 */
+  max-width: 800px;     /* 和上方致谢/读感板块一致的最大宽度 */
   margin: 20px auto;
-  padding: 0; /* 去掉左右内边距，和上方板块对齐 */
+  padding: 0;           /* 去掉左右内边距，和上方板块对齐 */
 }
 .comment-form {
   background: #f9f9f9;
-  padding: 30px; /* 内边距改为和读感板块一致的30px */
-  border-radius: 10px; /* 圆角改为和致谢/读感板块一致的10px */
+  padding: 30px;        /* 内边距改为和读感板块一致的30px */
+  border-radius: 10px;  /* 圆角改为和致谢/读感板块一致的10px */
   margin-bottom: 30px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 增加阴影，和上方板块风格统一 */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);   /* 增加阴影，和上方板块风格统一 */
 }
 .comment-form input, .comment-form textarea {
   width: 100%;
@@ -439,25 +439,25 @@ ul, li {
   font-size: 14px;
 }
 .comment-form button {
-  background: #c86464; /* 按钮颜色改为主题红，和页面整体风格统一 */
+  background: #c86464;     /* 按钮颜色为主题红，和页面整体风格统一 */
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px; /* 按钮圆角适配页面风格 */
+  border-radius: 8px;       /* 按钮圆角适配页面风格 */
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease; /* 增加hover动画 */
 }
 .comment-form button:hover {
-  background: #a04848; /* hover加深红色，和弹窗按钮风格一致 */
-  transform: translateY(-2px); /* 轻微上移，增加交互感 */
+  background: #a04848;          /* hover加深红色，和弹窗按钮风格一致 */
+  transform: translateY(-2px);    /* 轻微上移 */
 }
 .comment-list {
   margin-top: 20px;
-  padding: 0 30px; /* 给留言列表加左右内边距，避免内容贴边 */
+  padding: 0 30px;               /* 给留言列表加左右内边距，避免内容贴边 */
 }
 .comment-item {
-  padding: 15px 0; /* 去掉左右内边距，用列表的内边距控制 */
+  padding: 15px 0;               /* 去掉左右内边距，用列表的内边距控制 */
   border-bottom: 1px dashed #eee;
   margin-bottom: 15px;
 }
@@ -468,19 +468,19 @@ ul, li {
 }
 .comment-item .name {
   font-weight: bold;
-  color: #c86464; /* 昵称改为主题红，贴合页面风格 */
+  color: #c86464;          
 }
 .comment-item .time {
   font-size: 12px;
-  color: #999; /* 时间颜色调浅，和致谢板块文字色一致 */
+  color: #999;                  /* 时间颜色浅，和致谢板块文字色一致 */
 }
 .comment-item .content {
-  line-height: 1.8; /* 行间距和页面整体一致 */
-  color: #555; /* 内容文字色和读感板块一致 */
+  line-height: 1.8;               /* 行间距和页面整体一致 */
+  color: #555;                  /* 内容文字色和读感板块一致 */
   white-space: pre-wrap;
 }
 .no-comment {
   text-align: center;
   color: #6a737d;
-  padding: 20px 30px; /* 加左右内边距，和列表对齐 */
+  padding: 20px 30px;            /* 加左右内边距，和列表对齐 */
 }
