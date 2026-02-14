@@ -31,28 +31,28 @@ canvas{
     border-radius: 12px;
 }
 .game-over-text {
-    font-size: 70px; /* 适配850×1500：放大文字 */
+    font-size: 26px; /* 适配300×500：极致缩小文字 */
     font-weight: bold;
     color: #ff0000;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
 }
 .game-over-time {
-    font-size: 50px; /* 适配850×1500：放大文字 */
-    margin-bottom: 20px;
+    font-size: 18px; /* 适配300×500：极致缩小文字 */
+    margin-bottom: 6px;
 }
 .game-over-score {
-    font-size: 50px; /* 适配850×1500：放大文字 */
+    font-size: 18px; /* 适配300×500：极致缩小文字 */
     color: #ffed4e;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
 }
 #restart-button {
-    width: 300px; /* 适配850×1500：放大按钮 */
-    height: 90px;
+    width: 120px; /* 适配300×500：极致缩小按钮 */
+    height: 38px;
     background: #3b82f6;
     color: white;
     border: none;
-    border-radius: 15px;
-    font-size: 45px; /* 适配850×1500：放大文字 */
+    border-radius: 8px;
+    font-size: 22px; /* 适配300×500：极致缩小文字 */
     font-weight: bold;
     cursor: pointer;
 }
@@ -75,25 +75,25 @@ canvas{
 </div>
 
 <script>
-// ========== 核心修改：画布尺寸改为850×1500 ==========
-const SCREEN_WIDTH = 850
-const SCREEN_HEIGHT = 1500
+// ========== 画布尺寸==========
+const SCREEN_WIDTH = 300
+const SCREEN_HEIGHT = 550
 
 const GRID_COLS = 5
 const GRID_ROWS = 8
-// ========== 适配850宽度：格子大小改为150（5×150=750，留100px边距） ==========
-const CELL_SIZE = 150
+// ========== 格子大小改为56 ==========
+const CELL_SIZE = 54
 
-// ========== 适配850×1500：网格位置重新计算（居中+合理下移） ==========
-const GRID_LEFT = (SCREEN_WIDTH - GRID_COLS * CELL_SIZE) / 2  // 水平居中：(850-750)/2=50px
-const GRID_TOP  = 40  // 垂直下移40px，适配1500高度
+// ========== 网格位置 ==========
+const GRID_LEFT = (SCREEN_WIDTH - GRID_COLS * CELL_SIZE) / 2  // 水平居中：(300-280)/2=10px
+const GRID_TOP  = 12  // 垂直下移12px
 
 const FPS = 30
 const BASE_DROP_INTERVAL = 3000
 const BASE_FALL_SPEED = 15
 
 // 备注文字
-const CUSTOM_REMARK = "《惊悚旅游团》人物消消乐 | 图源：喵吉（图标）、燕孤鸿、安洵与嬉、沄澜"
+const CUSTOM_REMARK = "图源：喵吉（图标）、燕孤鸿、安洵与嬉、沄澜"
 
 let current_drop_interval = BASE_DROP_INTERVAL
 let current_fall_speed = BASE_FALL_SPEED
@@ -232,7 +232,7 @@ let id=grid[r][c]
 if(id){
 let img=images[id-1]
 if(img)
-ctx.drawImage(img,x+8,y+8,CELL_SIZE-16,CELL_SIZE-16) // 适配150格子：内边距放大到8px
+ctx.drawImage(img,x+2,y+2,CELL_SIZE-4,CELL_SIZE-4) // 适配56格子：内边距2px
 
 // 拖拽高亮
 if(dragging){
@@ -241,46 +241,46 @@ if(dragging){
         (r==drag_to?.[0] && c==drag_to?.[1])
     ){
         ctx.strokeStyle="red"
-        ctx.lineWidth=5 // 适配大尺寸：高亮边框加粗
-        ctx.strokeRect(x+4,y+4,CELL_SIZE-8,CELL_SIZE-8)
+        ctx.lineWidth=2 // 适配尺寸：高亮边框2px
+        ctx.strokeRect(x+1,y+1,CELL_SIZE-2,CELL_SIZE-2)
     }
 }
 }
 }
 }
 
-// ========== 适配850×1500：备注文字位置/大小调整 ==========
-const remarkY = GRID_TOP + GRID_ROWS * CELL_SIZE + 20  // 网格底部+20px
+// ========== 适配300×500：备注文字位置/大小调整 ==========
+const remarkY = GRID_TOP + GRID_ROWS * CELL_SIZE + 6  // 网格底部+6px
 ctx.fillStyle="#666"          
-ctx.font="20px Arial"         // 字体放大到20px
+ctx.font="10px Arial"          
 ctx.textAlign="center"        
-ctx.fillText(CUSTOM_REMARK, SCREEN_WIDTH/2+40, remarkY)  // 水平居中微调
+ctx.fillText(CUSTOM_REMARK, SCREEN_WIDTH/2+28, remarkY+5)  // 水平，竖直
 ctx.textAlign="left"          
 
-// ========== 适配850×1500：分数/速度文字位置/大小调整 ==========
+// ========== 适配300×500：分数/速度文字位置/大小调整 ==========
 ctx.fillStyle="red"
-ctx.font="30px Arial"         // 字体放大到30px
-ctx.fillText("分数："+score,30,SCREEN_HEIGHT-180) // 位置下移，适配1500高度
+ctx.font="14px Arial"         // 字体14px
+ctx.fillText("分数："+score,8,SCREEN_HEIGHT-80) 
 
 ctx.fillStyle="#333"
-ctx.fillText("下落速度："+current_fall_speed, 30, SCREEN_HEIGHT-120)
-ctx.fillText("生成速度："+(current_drop_interval/1000).toFixed(1)+"s", 30, SCREEN_HEIGHT-60)
+ctx.fillText("速度："+current_fall_speed, 8, SCREEN_HEIGHT-55)
+ctx.fillText("生成："+(current_drop_interval/1000).toFixed(1)+"s", 8, SCREEN_HEIGHT-30)
 
-// ========== 适配850×1500：按钮位置/大小调整 ==========
-drawBtn(650,1300,"-")  // 下落速度-（位置右移+下移）
-drawBtn(720,1300,"+")  // 下落速度+
-drawBtn(650,1380,"-")  // 生成速度-
-drawBtn(720,1380,"+")  // 生成速度+
+// ========== 按钮位置/大小调整 ==========
+drawBtn(205,470,"-")  
+drawBtn(245,470,"+")  
+drawBtn(205,500,"-") 
+drawBtn(245,500,"+") 
 
 }
 
-// ========== 适配850×1500：按钮绘制大小调整 ==========
+// ========== 按钮绘制大小调整 ==========
 function drawBtn(x,y,t){
 ctx.fillStyle="#3b82f6"
-ctx.fillRect(x,y,70,50) // 按钮放大到70×50px
+ctx.fillRect(x,y,32,24) // 按钮缩小到32×24px
 ctx.fillStyle="white"
-ctx.font="35px Arial"   // 按钮文字放大到35px
-ctx.fillText(t,x+20,y+35) // 文字位置微调居中
+ctx.font="16px Arial"   // 按钮文字16px
+ctx.fillText(t,x+10,y+17) // 文字位置微调居中
 }
 
 function getPos(e){
@@ -300,27 +300,27 @@ function getPos(e){
     }
 }
 
-// ========== 适配850×1500：按钮点击区域调整 ==========
+// ========== 按钮点击区域调整 ==========
 function start(e){
     if(gameOver) return
     let {x,y}=getPos(e)
     e.preventDefault()
 
     // 上面一行按钮 → 控制「下落速度」
-    if(x>650 && x<720 && y>1300 && y<1350){ // 适配新按钮位置
+    if(x>205 && x<237 && y>470 && y<494){ 
         current_fall_speed = Math.min(20, current_fall_speed + 1)
         return
     }
-    if(x>720 && x<790 && y>1300 && y<1350){ // 适配新按钮位置
+    if(x>245 && x<277 && y>470 && y<494){ 
         current_fall_speed = Math.max(1, current_fall_speed - 1)
         return
     }
     // 下面一行按钮 → 控制「生成速度」
-    if(x>650 && x<720 && y>1380 && y<1430){ // 适配新按钮位置
+    if(x>205 && x<237 && y>500 && y<524){ 
         current_drop_interval = Math.min(5000, current_drop_interval + 500)
         return
     }
-    if(x>720 && x<790 && y>1380 && y<1430){ // 适配新按钮位置
+    if(x>245 && x<277 && y>500 && y<524){ 
         current_drop_interval = Math.max(1000, current_drop_interval - 500)
         return
     }
